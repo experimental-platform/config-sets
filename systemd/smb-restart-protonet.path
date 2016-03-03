@@ -1,0 +1,11 @@
+# ExperimentalPlatform
+[Unit]
+Description=Protonet SMB
+
+[Path]
+PathModified=/etc/protonet/hostname
+PathModified=/data/samba/etc/smb.conf
+PathModified=/data/samba/etc/user_volumes.conf
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,13 @@
+# ExperimentalPlatform
+[Unit]
+Description=Start removal of unused docker images.
+After=init-protonet.service
+Requires=init-protonet.service
+
+[Timer]
+OnStartupSec=45min
+OnCalendar=*-*-* 06:00:00
+Unit=remove-images-protonet.service
+
+[Install]
+WantedBy=multi-user.target

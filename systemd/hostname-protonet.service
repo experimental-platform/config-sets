@@ -1,0 +1,11 @@
+# ExperimentalPlatform
+[Unit]
+After=init-protonet.service
+Requires=init-protonet.service
+Description=Update system hostname whenever it changes.
+ConditionFileNotEmpty=/etc/protonet/hostname
+
+[Service]
+ExecStart=/bin/bash -c 'hostnamectl set-hostname $(cat /etc/protonet/hostname)'
+KillMode=none
+Type=oneshot

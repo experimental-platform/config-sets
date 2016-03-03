@@ -1,0 +1,23 @@
+# ExperimentalPlatform
+[Unit]
+Description=Run 'simple key value storage' service
+After=sproxy-protonet.service
+Requires=sproxy-protonet.service
+
+[Service]
+TimeoutStartSec=0
+TimeoutStopSec=15
+Restart=always
+RestartSec=60s
+Type=notify
+NotifyAccess=all
+# ATTN: all needed directories are created in init-protonet.service
+ExecStart=/opt/bin/systemd-docker --cgroups name=systemd run --rm \
+    --name=skvs \
+    --volume=/etc/protonet:/data \
+    --link=sproxy:hook \
+    -p 127.0.0.1:9200:82 \
+  experimentalplatform/skvs:{{tag}}
+
+[Install]
+WantedBy=multi-user.target

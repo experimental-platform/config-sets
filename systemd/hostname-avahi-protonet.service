@@ -1,0 +1,20 @@
+# ExperimentalPlatform
+[Unit]
+Description=AVAHI Service -- hostname resolution via mDNS
+After=init-protonet.service
+Requires=init-protonet.service
+
+[Service]
+TimeoutStartSec=0
+TimeoutStopSec=15
+Restart=always
+RestartSec=60s
+Type=notify
+NotifyAccess=all
+ExecStart=/opt/bin/systemd-docker --cgroups name=systemd run --rm \
+    --name=hostname-avahi \
+    --net=host \
+    experimentalplatform/hostname-avahi:{{tag}}
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,28 @@
+# ExperimentalPlatform
+[Unit]
+Description=Run 'frontend' service
+After=skvs-protonet.service app-manager-protonet.service monitoring-protonet.service hardware-protonet.service
+Requires=skvs-protonet.service app-manager-protonet.service monitoring-protonet.service hardware-protonet.service
+
+[Service]
+TimeoutStartSec=0
+TimeoutStopSec=15
+Restart=always
+RestartSec=60s
+Type=notify
+NotifyAccess=all
+# ATTN: all needed directories are created in init-protonet.service
+ExecStart=/opt/bin/systemd-docker --cgroups name=systemd run --rm \
+    --name=frontend \
+    --publish=127.0.0.1:9002:3000 \
+    --link skvs \
+    --link app-manager \
+    --link monitoring \
+    --volume=/var/log/journal:/var/log/journal:ro \
+    --volume=/etc/machine-id:/etc/machine-id:ro \
+    --volume=/data/frontend:/data \
+    --volume=/data/hardware:/hardware \
+  experimentalplatform/frontend:{{tag}}
+
+[Install]
+WantedBy=multi-user.target

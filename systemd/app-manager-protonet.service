@@ -1,0 +1,20 @@
+# ExperimentalPlatform
+[Unit]
+Description=Run 'app manager' service
+After=init-protonet.service
+Requires=init-protonet.service
+
+[Service]
+TimeoutStartSec=0
+TimeoutStopSec=15
+Restart=always
+RestartSec=60s
+Type=notify
+NotifyAccess=all
+ExecStart=/opt/bin/systemd-docker --cgroups name=systemd run --rm \
+    --name=app-manager \
+    --volume=/var/run/docker.sock:/var/run/docker.sock \
+  experimentalplatform/app-manager:{{tag}}
+
+[Install]
+WantedBy=multi-user.target
