@@ -1,8 +1,0 @@
-# ExperimentalPlatform
-[Unit]
-Description=Set the timezone
-
-[Service]
-RemainAfterExit=yes
-Type=oneshot
-ExecStart=/usr/bin/env timedatectl set-timezone Europe/Berlin
